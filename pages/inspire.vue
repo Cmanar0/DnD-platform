@@ -17,5 +17,8 @@
 <script>
 export default {
   name: 'InspirePage',
+  meta: {
+    requiresAuth: true,
+  },
 }
 </script>

@@ -33,17 +33,43 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
+
   modules: [
-    // https://go.nuxtjs.dev/axios
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: 'AIzaSyDNqgjC3zIUoZPHx4jVpeaCvZwV-hWbaIk',
+          authDomain: 'dnd-platform.firebaseapp.com',
+          projectId: 'dnd-platform',
+          storageBucket: 'dnd-platform.appspot.com',
+          messagingSenderId: '599133981873',
+          appId: '1:599133981873:web:f134539f75068fca112690',
+          measurementId: 'G-C3RY8WYWQL',
+        },
+        services: {
+          auth: true, // Just as example. Can be any other service.
+        },
+      },
+    ],
     '@nuxtjs/axios',
   ],
-
+  // auth: {
+  //   persistence: 'local', // default
+  //   initialize: {
+  //     onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
+  //     onAuthStateChangedAction: 'onAuthStateChangedAction',
+  //     subscribeManually: false,
+  //   },
+  //   ssr: false, // default
+  //   emulatorPort: 9099,
+  //   emulatorHost: 'http://localhost',
+  // },
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
     baseURL: '/',
   },
-
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
