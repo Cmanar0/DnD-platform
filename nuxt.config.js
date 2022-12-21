@@ -18,7 +18,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [],
+  css: ['@/assets/css/main.css'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
@@ -54,17 +54,7 @@ export default {
     ],
     '@nuxtjs/axios',
   ],
-  // auth: {
-  //   persistence: 'local', // default
-  //   initialize: {
-  //     onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
-  //     onAuthStateChangedAction: 'onAuthStateChangedAction',
-  //     subscribeManually: false,
-  //   },
-  //   ssr: false, // default
-  //   emulatorPort: 9099,
-  //   emulatorHost: 'http://localhost',
-  // },
+
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
@@ -74,7 +64,7 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     theme: {
-      dark: true,
+      dark: false,
       themes: {
         dark: {
           primary: colors.blue.darken2,

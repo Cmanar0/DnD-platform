@@ -1,0 +1,56 @@
+:root {
+  --dark-grey-blue: rgba(52, 59, 74, 255);
+  --grey: rgba(103, 108, 119, 255);
+  --light-grey: rgba(236, 237, 240, 255);
+  --light-grey-credit-circle: rgb(220, 221, 223, 255);
+  --white: rgba(255, 255, 255, 255);
+  --light-blue: rgb(0, 124, 232);
+  --light-pink: rgba(255, 200, 200, 1);
+  --vibrant-red: rgba(204, 0, 1, 255);
+  --dark-red: rgba(184, 0, 1, 1);
+  --sand-yellow: rgba(255, 234, 128, 255);
+  --card-border: rgba(210, 210, 210, 210);
+  --active-green: rgba(25, 154, 130, 255);
+  --drawer-icon: rgba(255, 255, 255, 0.87);
+  --not-active-grey: rgba(175, 180, 189, 255);
+  --aqua: rgba(173, 239, 237, 255);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, basic-sans, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* .credentials-card-width {
+  max-width: 30%;
+} */
+.credentials-offset-top {
+  padding-top: calc(50px + 15%);
+}
+.credential-card {
+  width: 600px;
+  max-width: calc(600px + 15vw);
+}
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+.credentials-background {
+  background-image: url('~/static/credentials-background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+.error {
+  position: relative;
+  top: -10px;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+  background-color: var(--light-pink);
+  color: var(--vibrant-red);
+}
