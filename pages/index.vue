@@ -34,6 +34,7 @@
             <v-tab-item v-for="i in 3" :key="i" :value="'tab-' + i">
               <Login :index="i"> </Login>
               <Register :index="i"> </Register>
+              <ForgottenPassword :index="i"> </ForgottenPassword>
             </v-tab-item>
           </v-tabs-items>
         </v-card>
@@ -45,32 +46,20 @@
 <script>
 import Login from '~/components/credentials/Login.vue'
 import Register from '~/components/credentials/Register.vue'
+import ForgottenPassword from '~/components/credentials/ForgottenPassword.vue'
 export default {
   layout: 'public',
   components: {
     Login,
     Register,
+    ForgottenPassword,
   },
-  // watch: {
-  //   loading(val) {
-  //     if (!val) return
-
-  //     setTimeout(() => (this.loading = false), 3000)
-  //   },
-  // },
   data() {
     return {
       tab: null,
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-      // loading: false,
     }
   },
-  methods: {
-    // loadingProgress() {
-    //   console.log('object')
-    //   this.loading = true
-    // },
-  },
+  methods: {},
 }
 </script>
 <style scoped></style>

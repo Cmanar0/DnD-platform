@@ -11,6 +11,7 @@
   --sand-yellow: rgba(255, 234, 128, 255);
   --card-border: rgba(210, 210, 210, 210);
   --active-green: rgba(25, 154, 130, 255);
+  --light-green: rgba(138, 255, 128, 0.87);
   --drawer-icon: rgba(255, 255, 255, 0.87);
   --not-active-grey: rgba(175, 180, 189, 255);
   --aqua: rgba(173, 239, 237, 255);
@@ -53,4 +54,13 @@ body {
   width: 100%;
   background-color: var(--light-pink);
   color: var(--vibrant-red);
+}
+.success {
+  position: relative;
+  top: -10px;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%;
+  background-color: var(--light-green);
+  color: var(--active-green);
 }

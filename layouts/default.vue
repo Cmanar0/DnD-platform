@@ -38,7 +38,7 @@
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer />
       <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
+        <v-icon>mdi-account</v-icon>
       </v-btn>
     </v-app-bar>
     <v-main>
@@ -48,11 +48,31 @@
     </v-main>
     <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
       <v-list>
-        <v-list-item @click.native="right = !right">
+        <!-- <v-list-item @click.native="right = !right">
           <v-list-item-action>
             <v-icon light> mdi-repeat </v-icon>
           </v-list-item-action>
           <v-list-item-title>Switch drawer (click me)</v-list-item-title>
+        </v-list-item> -->
+        <v-list-item @click="routeTo(account.passwordChange.to)">
+          <v-list-item-action>
+            <v-icon>{{ account.passwordChange.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{
+              account.passwordChange.title
+            }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item @click="logOut">
+          <v-list-item-action>
+            <v-icon>{{ account.logOutItem.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{
+              account.logOutItem.title
+            }}</v-list-item-title>
+          </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -63,8 +83,13 @@
 </template>
 
 <script>
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/auth'
+import 'firebase/compat/firestore'
+
 export default {
   name: 'DefaultLayout',
+  components: {},
   data() {
     return {
       clipped: false,
@@ -74,7 +99,7 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'Welcome',
-          to: '/',
+          to: '/dashboard',
         },
         {
           icon: 'mdi-chart-bubble',
@@ -82,11 +107,55 @@ export default {
           to: '/inspire',
         },
       ],
+      account: {
+        logOutItem: {
+          icon: 'mdi-logout',
+          title: 'LogOut',
+          to: '/',
+        },
+        passwordChange: {
+          icon: 'mdi-lock',
+          title: 'Change password',
+          to: '/change-password',
+        },
+      },
+
       miniVariant: false,
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js',
     }
+  },
+  created() {
+    this.onAuthStateChangedMethod()
+  },
+  methods: {
+    logOut() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          console.log('loggedOut')
+          this.$router.push(this.logOutItem.to)
+        })
+        .catch((error) => {
+          this.error = error
+          console.log(this.error)
+        })
+    },
+    routeTo(link) {
+      this.$router.push(link)
+    },
+
+    onAuthStateChangedMethod() {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          return
+        } else {
+          this.$router.push('/')
+        }
+      })
+    },
   },
 }
 </script>

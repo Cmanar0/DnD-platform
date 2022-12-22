@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="index === 2">
+  <v-container v-if="index === 3">
     <v-card-text>
       <v-card>
         <v-progress-linear
@@ -10,19 +10,13 @@
           color="rgb(0, 124, 232)"
         ></v-progress-linear>
       </v-card>
-      <v-card-title> Register </v-card-title>
-      <v-container>
+      <v-card-title> Forgot a password? </v-card-title>
+      <v-container v-if="!reset">
         <v-form>
           <v-text-field
             v-model="email"
             label="Email"
             type="email"
-            required
-          ></v-text-field>
-          <v-text-field
-            v-model="password"
-            label="Password"
-            type="password"
             required
           ></v-text-field>
         </v-form>
@@ -31,8 +25,13 @@
         <br />
 
         <v-btn block color="rgb(98, 182, 255)" rounded @click="onRegister"
-          >Login</v-btn
+          >Send me an email to reset my password</v-btn
         >
+      </v-container>
+      <v-container v-else>
+        <br />
+        <div v-if="reset" class="success">{{ resetResult }}</div>
+        <br />
       </v-container>
     </v-card-text>
   </v-container>
@@ -48,9 +47,10 @@ export default {
   data() {
     return {
       email: '',
-      password: '',
       error: null,
       loading: false,
+      reset: false,
+      resetResult: '',
     }
   },
   watch: {
@@ -69,9 +69,11 @@ export default {
       // this.$emit('loading-progress')
       firebase
         .auth()
-        .createUserWithEmailAndPassword(this.email, this.password)
-        .then((user) => {
-          this.$router.push('/dashboard')
+        .sendPasswordResetEmail(this.email)
+        .then(() => {
+          this.reset = true
+          this.resetResult =
+            'We sent you an email with a link to reset your password'
         })
         .catch((error) => {
           this.error = error

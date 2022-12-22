@@ -44,7 +44,6 @@ import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
 
 export default {
-  layout: 'public',
   props: ['index'],
   data() {
     return {
@@ -72,7 +71,6 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
         .then((user) => {
-          console.log(user)
           this.$router.push('/dashboard')
         })
         .catch((error) => {
