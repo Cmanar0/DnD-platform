@@ -7,19 +7,19 @@
             <v-icon size="50px">mdi-compass-rose</v-icon>
           </div>
           <div class="medailon">
-            <h3>Create a new room of your own game</h3>
-            <p>and invite friends</p>
+            <h3>Share your game</h3>
+            <p>don't forget to invite your friends</p>
           </div>
         </div>
-        <v-btn class="btn-green create-btn" rounded @click="createGame">
-          <v-icon>mdi-plus-circle</v-icon>
-          <span style="margin-left: 10px">Create a game</span></v-btn
-        >
+        <v-btn color="rgb(98, 182, 255)" rounded @click="createGame">
+          <v-icon>mdi-share</v-icon><span style="margin-left: 10px">Share</span>
+        </v-btn>
       </div>
     </div>
-
     <div class="content-page">
-      <ListOfRooms :apiResult="apiResult"></ListOfRooms>
+      <div class="content-card">
+        <CreateEditRoom :apiResult="apiResult"></CreateEditRoom>
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +27,10 @@
 <script>
 import ListOfRooms from '/components/list-components/ListOfRooms.vue'
 import CreateEditRoom from '/components/form-components/CreateEditRoom.vue'
+
+import 'firebase/compat/auth'
+import 'firebase/compat/firestore'
+import { createDocument } from '~/firebase'
 
 export default {
   components: {
@@ -38,15 +42,9 @@ export default {
   },
 
   methods: {
-    createGame() {
-      this.$router.push('/create-edit-room')
-    },
+    createGame() {},
   },
 }
 </script>
 
-<style scoped>
-.create-btn {
-  height: 50px !important;
-}
-</style>
+<style scoped></style>

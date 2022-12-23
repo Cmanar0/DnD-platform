@@ -12,6 +12,37 @@ const firebaseConfig = {
   measurementId: 'G-C3RY8WYWQL',
 }
 
-app = firebase.initializeApp(firebaseConfig)
+const firebaseApp = firebase.initializeApp(firebaseConfig)
+
+const db = firebaseApp.firestore()
+
+export const createDocument = (collection, document) => {
+  return db.collection(collection).add(document)
+}
+
+export const getDocument = async (collection, id) => {
+  const document = await db.collection(collection).doc(id).get()
+  return document.exists ? document.data() : null
+}
+
+export const updateDocument = async (collection, id, document) => {
+  return db.collection(collection).doc(id).update(document)
+}
+
+export const deleteDocument = async (collection, id, document) => {
+  return db.collection(collection).doc(id).delete(document)
+}
+
+// export const useLoaddocuments = (collection) => {
+//   const documents = ref([])
+//   const close = db.collection(collection).onSnapshot((snapshot) => {
+//     documents.value = snapshot.docs.map((doc) => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }))
+//   })
+//   onUnmounted(close)
+//   return documents
+// }
 
 export default firebase

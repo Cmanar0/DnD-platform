@@ -35,18 +35,18 @@ export default {
     }
   },
   created() {
-    this.onAuthStateChangedMethod()
+    // this.onAuthStateChangedMethod()
   },
   methods: {
-    onAuthStateChangedMethod() {
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          return
-        } else {
-          this.$router.push('/')
-        }
-      })
-    },
+    // onAuthStateChangedMethod() {
+    //   firebase.auth().onAuthStateChanged((user) => {
+    //     if (user) {
+    //       return
+    //     } else {
+    //       this.$router.push('/')
+    //     }
+    //   })
+    // },
   },
 }
 </script>
