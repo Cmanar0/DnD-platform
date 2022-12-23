@@ -34,7 +34,7 @@ body {
   padding-top: calc(50px + 15%);
 }
 .btn-green {
-  border-radius: 8px !important;
+  border-radius: 20px !important;
   border-color: rgb(44, 176, 0) !important;
   color: white !important;
   background-color: rgb(44, 176, 0) !important;
@@ -133,4 +133,37 @@ body {
 }
 .medailon p {
   margin: 0 !important;
+}
+
+/* animations */
+
+.big-icon {
+  scale: 2;
+}
+.icon-spinner:hover {
+  animation: spin-animation 5s infinite;
+  display: inline-block;
+  scale: 1.8;
+}
+.btn-icon-spinner:hover {
+  animation: spin-animation 5s infinite;
+  display: inline-block;
+  scale: 1.2;
+}
+
+@keyframes spin-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
+@keyframes btn-spin-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
 }

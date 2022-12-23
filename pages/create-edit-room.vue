@@ -4,7 +4,7 @@
       <div class="flex-head">
         <div class="flex">
           <div>
-            <v-icon size="50px">mdi-compass-rose</v-icon>
+            <v-icon class="big-icon icon-spinner">mdi-compass-rose</v-icon>
           </div>
           <div class="medailon">
             <h3>Share your game</h3>

@@ -4,7 +4,7 @@
       <div class="flex-head">
         <div class="flex">
           <div>
-            <v-icon size="50px">mdi-compass-rose</v-icon>
+            <v-icon class="big-icon icon-spinner">mdi-compass-rose</v-icon>
           </div>
           <div class="medailon">
             <h3>Create a new room of your own game</h3>
@@ -12,7 +12,7 @@
           </div>
         </div>
         <v-btn class="btn-green create-btn" rounded @click="createGame">
-          <v-icon>mdi-plus-circle</v-icon>
+          <v-icon class="btn-icon-spinner">mdi-plus-circle</v-icon>
           <span style="margin-left: 10px">Create a game</span></v-btn
         >
       </div>
@@ -48,5 +48,6 @@ export default {
 <style scoped>
 .create-btn {
   height: 50px !important;
+  border-radius: 25px !important;
 }
 </style>
