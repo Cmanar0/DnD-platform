@@ -3,7 +3,7 @@
     <div class="page-head">
       <div class="flex-head">
         <div class="flex">
-          <div>
+          <div class="ico">
             <v-icon class="big-icon icon-spinner">mdi-compass-rose</v-icon>
           </div>
           <div class="medailon">
@@ -19,13 +19,13 @@
     </div>
 
     <div class="content-page">
-      <ListOfRooms :apiResult="apiResult"></ListOfRooms>
+      <ListOfRooms></ListOfRooms>
     </div>
   </div>
 </template>
 
 <script>
-import ListOfRooms from '/components/list-components/ListOfRooms.vue'
+import ListOfRooms from '/components/list-components/list-of-rooms/ListOfRooms.vue'
 import CreateEditRoom from '/components/form-components/CreateEditRoom.vue'
 
 export default {

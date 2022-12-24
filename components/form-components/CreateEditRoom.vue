@@ -27,7 +27,7 @@
             <v-dialog
               ref="dialog"
               v-model="calendar"
-              :return-value.sync="date"
+              :return-value.sync="form.date_start"
               persistent
               width="290px"
             >
@@ -57,23 +57,35 @@
             </v-dialog>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="12" md="12">
+            <v-text-field
+              v-model="form.description"
+              :rules="description_rules"
+              :counter="350"
+              label="Description"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
       </v-container>
       <v-btn class="btn-green" rounded @click="createGame">Create a game</v-btn>
     </v-form>
+    <Snackbar
+      :colorProp="snackbarColor"
+      :textProp="snackbarText"
+      :snackbarProp="snackbar"
+      @snackbar-salfe="snackbar = false"
+    >
+    </Snackbar>
   </div>
 </template>
 
 <script>
-import ListOfRooms from '/components/list-components/ListOfRooms.vue'
-
-import 'firebase/compat/auth'
-import 'firebase/compat/firestore'
 import { createDocument } from '~/firebase'
 
 export default {
-  components: {
-    ListOfRooms,
-  },
+  components: {},
   data() {
     return {
       valid: false,
@@ -86,15 +98,20 @@ export default {
         (v) => v >= 2 || 'Max amount of players has to be at least 2',
         (v) => v <= 10 || 'Max amount of players can not excede 10 players',
       ],
-      emailRules: [
-        (v) => !!v || 'E-mail is required',
-        (v) => /.+@.+/.test(v) || 'E-mail must be valid',
+      description_rules: [
+        (v) => !!v || 'Description is required',
+        (v) =>
+          v.length <= 350 ||
+          'Max amount of characters can not excede 350 players',
       ],
       loaded: false,
-
+      snackbar: false,
+      snackbarText: '',
+      snackbarColor: '',
       calendar: false,
       form: {
         title: '',
+        description: '',
         num_of_players: 1,
         max_players: null,
         date_start: new Date(
@@ -114,14 +131,18 @@ export default {
   created() {},
   methods: {
     createGame() {
-      console.log(this.valid)
-
       if (!this.valid) {
-        console.log('not valid')
+        this.snackbar = true
+        this.snackbarText = 'Please fill information into all required fields.'
+        this.snackbarColor = 'red'
         return
       }
       const collection = 'rooms'
       createDocument(collection, this.form)
+      this.snackbar = true
+      this.snackbarText = 'Room was created successfully.'
+      this.snackbarColor = 'green'
+      setTimeout(() => this.$router.push('/dashboard'), 1500)
     },
   },
 }

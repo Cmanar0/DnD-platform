@@ -12,12 +12,31 @@ const firebaseConfig = {
   measurementId: 'G-C3RY8WYWQL',
 }
 
-const firebaseApp = firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig)
 
-const db = firebaseApp.firestore()
+const db = firebase.firestore()
 
 export const createDocument = (collection, document) => {
   return db.collection(collection).add(document)
+}
+
+// export const getCollection = async (collection) => {
+//   const documents = await db
+//     .collection(collection)
+//     .get()
+//     .then((querySnapshot) => {
+//       let arr = querySnapshot.docs.map((doc) => {
+//         return doc.data()
+//       })
+//       return arr
+//     })
+//   // console.log(documents)
+//   return documents
+// }
+
+export const getCollection = async (collection) => {
+  const snapshot = await db.collection(collection).get()
+  return snapshot.docs.map((doc) => doc.data())
 }
 
 export const getDocument = async (collection, id) => {

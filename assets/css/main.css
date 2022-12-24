@@ -35,9 +35,9 @@ body {
 }
 .btn-green {
   border-radius: 20px !important;
-  border-color: rgb(44, 176, 0) !important;
+  border-color: rgba(76, 175, 81, 255) !important;
   color: white !important;
-  background-color: rgb(44, 176, 0) !important;
+  background-color: rgba(76, 175, 81, 255) !important;
   text-decoration: rgb(101, 101, 101) !important;
   max-width: auto;
   font-size-adjust: auto;
@@ -45,17 +45,10 @@ body {
 }
 
 .btn-green:hover {
-  background-color: rgba(20, 152, 0, 1) !important;
-  color: rgb(216, 216, 216) !important;
+  background-color: rgba(76, 175, 81, 255) !important;
+  color: rgb(242, 242, 242) !important;
   text-decoration-color: rgb(255, 255, 255) !important;
-  border-color: rgba(20, 152, 0, 1) !important;
-  margin: 1px;
-}
-.btn-green:active {
-  background-color: rgba(20, 152, 0, 1) !important;
-  color: rgb(58, 58, 58) !important;
-  text-decoration-color: rgb(255, 255, 255) !important;
-  border-color: rgba(20, 152, 0, 1) !important;
+  border-color: rgba(76, 175, 81, 255) !important;
   margin: 1px;
 }
 
@@ -70,6 +63,11 @@ body {
 }
 .flex-center {
   display: flex;
+  justify-content: center;
+}
+.flex-col {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
 }
 .credentials-background {
@@ -118,6 +116,9 @@ body {
 .content-page {
   padding: 25px;
 }
+.ico {
+  width: 48px;
+}
 .flex-head {
   display: flex;
   gap: 25px;
@@ -138,6 +139,7 @@ body {
 /* animations */
 
 .big-icon {
+  margin-left: 24px;
   scale: 2;
 }
 .icon-spinner:hover {
@@ -149,6 +151,9 @@ body {
   animation: spin-animation 5s infinite;
   display: inline-block;
   scale: 1.2;
+}
+room :nth-child(even) .views {
+  background-color: red;
 }
 
 @keyframes spin-animation {
@@ -166,4 +171,15 @@ body {
   100% {
     transform: rotate(359deg);
   }
+}
+.room {
+  cursor: pointer;
+}
+.room :hover {
+  background-color: rgba(238, 238, 238, 0.173);
+}
+.room :active {
+  background-color: rgba(238, 238, 238, 0.338);
+  transform: scale(0.999, 0.999);
+  transition: all 0.01s ease-in-out;
 }

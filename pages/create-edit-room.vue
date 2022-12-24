@@ -3,7 +3,7 @@
     <div class="page-head">
       <div class="flex-head">
         <div class="flex">
-          <div>
+          <div class="ico">
             <v-icon class="big-icon icon-spinner">mdi-compass-rose</v-icon>
           </div>
           <div class="medailon">
@@ -18,23 +18,17 @@
     </div>
     <div class="content-page">
       <div class="content-card">
-        <CreateEditRoom :apiResult="apiResult"></CreateEditRoom>
+        <CreateEditRoom></CreateEditRoom>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import ListOfRooms from '/components/list-components/ListOfRooms.vue'
 import CreateEditRoom from '/components/form-components/CreateEditRoom.vue'
-
-import 'firebase/compat/auth'
-import 'firebase/compat/firestore'
-import { createDocument } from '~/firebase'
 
 export default {
   components: {
-    ListOfRooms,
     CreateEditRoom,
   },
   data() {
