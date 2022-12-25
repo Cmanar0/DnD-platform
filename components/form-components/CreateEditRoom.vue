@@ -82,11 +82,14 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-btn class="btn-green" rounded @click="createGame">{{
-        btnComputed
-      }}</v-btn>
+      <v-btn
+        :disabled="disable"
+        class="btn-green"
+        rounded
+        @click="createGame"
+        >{{ btnComputed }}</v-btn
+      >
     </v-form>
-    {{ roomDetails }}
     <Snackbar
       :colorProp="snackbarColor"
       :textProp="snackbarText"
@@ -139,6 +142,7 @@ export default {
           'Min amount of characters can not be less than 20 players',
       ],
       loaded: false,
+      disable: false,
       snackbar: false,
       snackbarText: '',
       snackbarColor: '',
@@ -187,7 +191,7 @@ export default {
     }
     firebase.auth().onAuthStateChanged((user) => {
       if (user && this.roomDetails && this.form.uid_of_creator !== user.uid) {
-        console.log('mel bych usera poslat na dashboard')
+        this.$router.push('/dashboard')
       } else if (
         user &&
         this.roomDetails &&
@@ -219,6 +223,7 @@ export default {
         return
       }
       const collection = 'rooms'
+      this.disable = true
 
       if (this.roomDetails === null) {
         createDocument(collection, this.form)
@@ -229,7 +234,7 @@ export default {
       } else {
         updateDocument(collection, this.form.doc_id, this.form)
         this.snackbar = true
-        this.snackbarText = 'Room was created successfully.'
+        this.snackbarText = 'Room was updated successfully.'
         this.snackbarColor = 'green'
         setTimeout(() => this.$router.push('/dashboard'), 1500)
       }
