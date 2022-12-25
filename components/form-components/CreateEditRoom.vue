@@ -82,8 +82,11 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-btn class="btn-green" rounded @click="createGame">Create a game</v-btn>
+      <v-btn class="btn-green" rounded @click="createGame">{{
+        btnComputed
+      }}</v-btn>
     </v-form>
+    {{ roomDetails }}
     <Snackbar
       :colorProp="snackbarColor"
       :textProp="snackbarText"
@@ -99,11 +102,19 @@ import { createDocument } from '~/firebase'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
+import { getDocument } from '~/firebase'
+import { updateDocument } from '~/firebase'
 
 export default {
   components: {},
+  props: {
+    query: {
+      default: null,
+    },
+  },
   data() {
     return {
+      roomDetails: null,
       valid: false,
       password_rules: [
         (v) => !!v || 'Title is required',
@@ -154,6 +165,11 @@ export default {
     },
   },
   computed: {
+    btnComputed: function () {
+      if (this.roomDetails !== null) {
+        return 'Update'
+      } else return 'Create a room'
+    },
     password_rules_computed: function () {
       if (this.form.private) {
         return this.password_rules
@@ -162,25 +178,32 @@ export default {
       }
     },
   },
-  created() {
+  async created() {
+    if (this.query !== null) {
+      await this.fetchData('rooms', this.query)
+      if (this.roomDetails) {
+        Object.assign(this.form, this.roomDetails)
+      }
+    }
     firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        //
-        //
-        //
-        //
-        // pokud edituji, musím porovnat this.form.uid_of_creator a user_id (aby mohl upravovat jen tvvůrce)
-        //
-        //
-        //
-        //
-        if (this.form.uid_of_creator === null) {
-          this.form.uid_of_creator = user.uid
-        }
+      if (user && this.roomDetails && this.form.uid_of_creator !== user.uid) {
+        console.log('mel bych usera poslat na dashboard')
+      } else if (
+        user &&
+        this.roomDetails &&
+        this.form.uid_of_creator === user.uid
+      ) {
+        console.log('user se shoduje s tvurcem roomu')
+      } else {
+        this.form.uid_of_creator = user.uid
       }
     })
   },
+
   methods: {
+    async fetchData(collectionProp, doc_idProp) {
+      this.roomDetails = await getDocument(collectionProp, doc_idProp)
+    },
     createUniqueId() {
       // Generate a random number between 1 and 1000
       const uniqueValue = Math.floor(Math.random() * 1000) + 1
@@ -196,11 +219,20 @@ export default {
         return
       }
       const collection = 'rooms'
-      createDocument(collection, this.form)
-      this.snackbar = true
-      this.snackbarText = 'Room was created successfully.'
-      this.snackbarColor = 'green'
-      setTimeout(() => this.$router.push('/dashboard'), 1500)
+
+      if (this.roomDetails === null) {
+        createDocument(collection, this.form)
+        this.snackbar = true
+        this.snackbarText = 'Room was created successfully.'
+        this.snackbarColor = 'green'
+        setTimeout(() => this.$router.push('/dashboard'), 1500)
+      } else {
+        updateDocument(collection, this.form.doc_id, this.form)
+        this.snackbar = true
+        this.snackbarText = 'Room was created successfully.'
+        this.snackbarColor = 'green'
+        setTimeout(() => this.$router.push('/dashboard'), 1500)
+      }
     },
   },
 }

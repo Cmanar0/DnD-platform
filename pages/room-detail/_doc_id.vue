@@ -19,7 +19,8 @@
     </div>
     <div class="content-page">
       <div class="content-card">
-        <CreateEditRoom></CreateEditRoom>
+        <!-- <CreateEditRoom></CreateEditRoom> -->
+        {{ roomDetails.title }}
       </div>
     </div>
   </div>

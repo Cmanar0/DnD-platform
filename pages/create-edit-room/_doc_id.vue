@@ -1,7 +1,5 @@
 <template>
   <div>
-    <div>{{ query.doc_id }}</div>
-
     <div class="page-head">
       <div class="flex-head">
         <div class="flex">
@@ -20,7 +18,7 @@
     </div>
     <div class="content-page">
       <div class="content-card">
-        <CreateEditRoom></CreateEditRoom>
+        <CreateEditRoom :query="query"></CreateEditRoom>
       </div>
     </div>
   </div>
@@ -36,19 +34,18 @@ export default {
   },
   data() {
     return {
-      query: this.$route.query,
-      roomDetails: {},
+      query: this.$route.query.doc_id,
+      // roomDetails: {},
     }
   },
   async created() {
-    await this.fetchData('rooms', this.$route.query.doc_id)
+    // await this.fetchData('rooms', this.$route.query.doc_id)
   },
   methods: {
     createGame() {},
-    async fetchData(collectionProp, doc_idProp) {
-      this.roomDetails = await getDocument(collectionProp, doc_idProp)
-      console.log(this.roomDetails)
-    },
+    // async fetchData(collectionProp, doc_idProp) {
+    //   this.roomDetails = await getDocument(collectionProp, doc_idProp)
+    // },
   },
 }
 </script>
