@@ -12,7 +12,6 @@
               required
             ></v-text-field>
           </v-col>
-
           <v-col cols="12" md="4">
             <v-text-field
               v-model="form.max_players"
@@ -22,7 +21,7 @@
               required
             ></v-text-field>
           </v-col>
-
+          {{ form.max_playersNum }}
           <v-col cols="12" md="4">
             <v-dialog
               ref="dialog"
@@ -68,6 +67,20 @@
             ></v-text-field>
           </v-col>
         </v-row>
+        <v-row>
+          <v-col cols="12" md="4">
+            <v-switch v-model="form.private" label="Private game"></v-switch>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-text-field
+              v-model="form.password"
+              :rules="password_rules_computed"
+              :counter="10"
+              label="Password"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
       </v-container>
       <v-btn class="btn-green" rounded @click="createGame">Create a game</v-btn>
     </v-form>
@@ -83,12 +96,19 @@
 
 <script>
 import { createDocument } from '~/firebase'
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/auth'
+import 'firebase/compat/firestore'
 
 export default {
   components: {},
   data() {
     return {
       valid: false,
+      password_rules: [
+        (v) => !!v || 'Title is required',
+        (v) => v.length >= 4 || 'Title must have at least 4 characters',
+      ],
       title_rules: [
         (v) => !!v || 'Title is required',
         (v) => v.length >= 4 || 'Title must have at least 4 characters',
@@ -103,6 +123,9 @@ export default {
         (v) =>
           v.length <= 350 ||
           'Max amount of characters can not excede 350 players',
+        (v) =>
+          v.length >= 20 ||
+          'Min amount of characters can not be less than 20 players',
       ],
       loaded: false,
       snackbar: false,
@@ -110,8 +133,11 @@ export default {
       snackbarColor: '',
       calendar: false,
       form: {
+        room_id: `room${Math.floor(Math.random() * 1000000000) + 1}`,
         title: '',
+        password: '',
         description: '',
+        private: false,
         num_of_players: 1,
         max_players: null,
         date_start: new Date(
@@ -123,13 +149,35 @@ export default {
     }
   },
   watch: {
-    // loaded(val) {
-    //   if (!val) return
-    //   setTimeout(() => (this.loaded = false), 800)
-    // },
+    max_players(newValue) {
+      this.max_players = Number(newValue)
+    },
   },
-  created() {},
+  computed: {
+    password_rules_computed: function () {
+      if (this.form.private) {
+        return this.password_rules
+      } else {
+        return []
+      }
+    },
+  },
+  created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // console.log('user:')
+        // console.log(user)
+      }
+    })
+  },
   methods: {
+    createUniqueId() {
+      // Generate a random number between 1 and 1000
+      const uniqueValue = Math.floor(Math.random() * 1000) + 1
+      // Prefix the unique value with "room"
+      const uniqueId = 'room' + uniqueValue
+      return uniqueId
+    },
     createGame() {
       if (!this.valid) {
         this.snackbar = true

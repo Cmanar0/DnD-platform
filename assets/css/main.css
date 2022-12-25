@@ -179,7 +179,6 @@ room :nth-child(even) .views {
   background-color: rgba(238, 238, 238, 0.173);
 }
 .room :active {
-  background-color: rgba(238, 238, 238, 0.338);
-  transform: scale(0.999, 0.999);
-  transition: all 0.01s ease-in-out;
+  background-color: rgba(238, 238, 238, 0.571);
+  transition: all 0.2s ease-in-out;
 }

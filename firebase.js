@@ -36,7 +36,18 @@ export const createDocument = (collection, document) => {
 
 export const getCollection = async (collection) => {
   const snapshot = await db.collection(collection).get()
-  return snapshot.docs.map((doc) => doc.data())
+  let arrayOfData = snapshot.docs.map((doc) => doc.data())
+  let arrayOfId = snapshot.docs.map((doc) => doc.id)
+
+  const newArray = []
+
+  for (let i = 0; i < arrayOfData.length; i++) {
+    const element = arrayOfData[i]
+    element.id = arrayOfId[i]
+    newArray.push(element)
+  }
+
+  return newArray
 }
 
 export const getDocument = async (collection, id) => {
