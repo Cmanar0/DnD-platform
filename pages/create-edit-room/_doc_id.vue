@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div>{{ query.room_id }}</div>
+    <div>{{ query.doc_id }}</div>
+
     <div class="page-head">
       <div class="flex-head">
         <div class="flex">
@@ -40,12 +41,12 @@ export default {
     }
   },
   async created() {
-    await this.fetchData('rooms', this.$route.query.room_id)
+    await this.fetchData('rooms', this.$route.query.doc_id)
   },
   methods: {
     createGame() {},
-    async fetchData(collectionProp, room_idProp) {
-      this.roomDetails = await getDocument(collectionProp, room_idProp)
+    async fetchData(collectionProp, doc_idProp) {
+      this.roomDetails = await getDocument(collectionProp, doc_idProp)
       console.log(this.roomDetails)
     },
   },

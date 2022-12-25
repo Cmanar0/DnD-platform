@@ -14,6 +14,12 @@
       <v-container>
         <v-form>
           <v-text-field
+            v-model="nickname"
+            label="Nickname"
+            type="email"
+            required
+          ></v-text-field>
+          <v-text-field
             v-model="email"
             label="Email"
             type="email"
@@ -31,7 +37,7 @@
         <br />
 
         <v-btn block color="rgb(98, 182, 255)" rounded @click="onRegister"
-          >Login</v-btn
+          >Register</v-btn
         >
       </v-container>
     </v-card-text>
@@ -47,21 +53,23 @@ export default {
   props: ['index'],
   data() {
     return {
+      nickname: '',
       email: '',
       password: '',
       error: null,
       loading: false,
+      cred: {},
+      uid: '',
     }
   },
   watch: {
     loading(val) {
       if (!val) return
-
       setTimeout(() => (this.loading = false), 800)
     },
   },
   methods: {
-    onRegister() {
+    async onRegister() {
       this.loading = true
 
       console.log('this.email :>> ', this.email)
@@ -70,7 +78,18 @@ export default {
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
-        .then((user) => {
+        .then((cred) => {
+          return firebase
+            .firestore()
+            .collection('users')
+            .doc(cred.user.uid)
+            .set({
+              uid: cred.user.uid,
+              nickname: this.nickname,
+              email: this.email,
+            })
+        })
+        .then(() => {
           this.$router.push('/dashboard')
         })
         .catch((error) => {
@@ -78,6 +97,9 @@ export default {
           console.log(this.error)
         })
     },
+    // async createUserInFirebase(collection, document, uid) {
+    //   await createDocument(collection, document, uid)
+    // },
   },
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div @click="openRoomDetail(item.id)">
+  <div @click="openRoomDetail(item.doc_id)">
     <div class="custom-pad no-inherit">
       <div class="flex" style="max-width: calc(100% - 105px) !important">
         <div class="custom-room-medailon">
@@ -63,6 +63,11 @@
             @close="dialogs.delete = false"
             :item="dialogProps"
           />
+          <DialogEdit
+            v-if="dialogs.edit"
+            @close="dialogs.edit = false"
+            :item="dialogProps"
+          />
         </div>
       </v-list-item-action>
     </div>
@@ -95,17 +100,8 @@ export default {
             this.dialogs.edit = true
           },
           text: 'Do you want to edit this room?',
-        },
-        {
-          title: 'Share',
-          icon: 'mdi-calendar',
-          click() {
-            this.dialogs.dueDate = true
-          },
-          text: 'Do you want to edit this room?',
-          link: 'www.seznam.cz',
-          btnText: 'copy',
-          btnIcon: 'mdi-calendar',
+          path: `/create-edit-room`,
+          query: { doc_id: this.item.doc_id },
         },
         {
           title: 'Delete',
@@ -124,11 +120,11 @@ export default {
       this.items[index].click.call(this)
       this.dialogProps = { ...this.items[index] }
     },
-    openRoomDetail(room_id) {
-      console.log(room_id)
+    openRoomDetail(doc_id) {
+      console.log(doc_id)
       this.$router.push({
         path: `/room-detail`,
-        query: { room_id: room_id },
+        query: { doc_id: doc_id },
       })
     },
   },

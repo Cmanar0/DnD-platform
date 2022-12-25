@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div>{{ query.doc_id }}</div>
     <div class="page-head">
       <div class="flex-head">
         <div class="flex">
@@ -26,17 +27,27 @@
 
 <script>
 import CreateEditRoom from '/components/form-components/CreateEditRoom.vue'
+import { getDocument } from '~/firebase'
 
 export default {
   components: {
     CreateEditRoom,
   },
   data() {
-    return {}
+    return {
+      query: this.$route.query,
+      roomDetails: {},
+    }
   },
-
+  async created() {
+    await this.fetchData('rooms', this.$route.query.doc_id)
+  },
   methods: {
     createGame() {},
+    async fetchData(collectionProp, doc_idProp) {
+      this.roomDetails = await getDocument(collectionProp, doc_idProp)
+      console.log(this.roomDetails)
+    },
   },
 }
 </script>

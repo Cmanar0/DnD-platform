@@ -133,7 +133,7 @@ export default {
       snackbarColor: '',
       calendar: false,
       form: {
-        room_id: `room${Math.floor(Math.random() * 1000000000) + 1}`,
+        uid_of_creator: null,
         title: '',
         password: '',
         description: '',
@@ -165,8 +165,18 @@ export default {
   created() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        // console.log('user:')
-        // console.log(user)
+        //
+        //
+        //
+        //
+        // pokud edituji, musím porovnat this.form.uid_of_creator a user_id (aby mohl upravovat jen tvvůrce)
+        //
+        //
+        //
+        //
+        if (this.form.uid_of_creator === null) {
+          this.form.uid_of_creator = user.uid
+        }
       }
     })
   },

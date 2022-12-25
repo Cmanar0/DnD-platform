@@ -45,14 +45,9 @@ export default {
     await this.fetchData('rooms')
   },
   methods: {
-    async fetchData(collectionProp) {
-      this.myRooms = await getCollection(collectionProp)
+    async fetchData(collection) {
+      this.myRooms = await getCollection(collection)
       console.log(this.myRooms)
-      // this.myRooms = [...getCollection(collectionProp)]
-      // this.snackbar = true
-      // this.snackbarText = 'Room was created successfully.'
-      // this.snackbarColor = 'green'
-      // setTimeout(() => this.$router.push('/dashboard'), 1500)
     },
   },
 }

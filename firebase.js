@@ -16,38 +16,29 @@ firebase.initializeApp(firebaseConfig)
 
 const db = firebase.firestore()
 
-export const createDocument = (collection, document) => {
-  return db.collection(collection).add(document)
-}
+export const createDocument = async (collection, document) => {
+  let docRef = db.collection(collection).doc()
+  await docRef.set({
+    ...document,
+    doc_id: docRef.id,
+  })
 
-// export const getCollection = async (collection) => {
-//   const documents = await db
-//     .collection(collection)
-//     .get()
-//     .then((querySnapshot) => {
-//       let arr = querySnapshot.docs.map((doc) => {
-//         return doc.data()
-//       })
-//       return arr
-//     })
-//   // console.log(documents)
-//   return documents
-// }
+  // Alternatively:
+  // // Add a new document with a generated ID
+  // let docRef = await db.collection(collection).add({
+  //   ...document,
+  //   xid: '',
+  // });
+  // // Update the new document with the ID
+  // await docRef.update({
+  //   xid: docRef.id
+  // });
+}
 
 export const getCollection = async (collection) => {
   const snapshot = await db.collection(collection).get()
   let arrayOfData = snapshot.docs.map((doc) => doc.data())
-  let arrayOfId = snapshot.docs.map((doc) => doc.id)
-
-  const newArray = []
-
-  for (let i = 0; i < arrayOfData.length; i++) {
-    const element = arrayOfData[i]
-    element.id = arrayOfId[i]
-    newArray.push(element)
-  }
-
-  return newArray
+  return arrayOfData
 }
 
 export const getDocument = async (collection, id) => {
@@ -62,17 +53,5 @@ export const updateDocument = async (collection, id, document) => {
 export const deleteDocument = async (collection, id, document) => {
   return db.collection(collection).doc(id).delete(document)
 }
-
-// export const useLoaddocuments = (collection) => {
-//   const documents = ref([])
-//   const close = db.collection(collection).onSnapshot((snapshot) => {
-//     documents.value = snapshot.docs.map((doc) => ({
-//       id: doc.id,
-//       ...doc.data(),
-//     }))
-//   })
-//   onUnmounted(close)
-//   return documents
-// }
 
 export default firebase
