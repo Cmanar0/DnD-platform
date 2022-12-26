@@ -54,6 +54,14 @@
           </v-list-item-action>
           <v-list-item-title>Switch drawer (click me)</v-list-item-title>
         </v-list-item> -->
+        <v-list-item @click="routeTo(account.myAccount.to)">
+          <v-list-item-action>
+            <v-icon>{{ account.myAccount.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>{{ account.myAccount.title }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item @click="routeTo(account.passwordChange.to)">
           <v-list-item-action>
             <v-icon>{{ account.passwordChange.icon }}</v-icon>
@@ -108,15 +116,20 @@ export default {
         },
       ],
       account: {
-        logOutItem: {
-          icon: 'mdi-logout',
-          title: 'LogOut',
-          to: '/',
+        myAccount: {
+          icon: 'mdi-account',
+          title: 'Account',
+          to: '/account/account',
         },
         passwordChange: {
           icon: 'mdi-lock',
           title: 'Change password',
           to: '/change-password',
+        },
+        logOutItem: {
+          icon: 'mdi-logout',
+          title: 'LogOut',
+          to: '/',
         },
       },
 

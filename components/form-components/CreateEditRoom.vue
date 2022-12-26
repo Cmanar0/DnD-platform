@@ -148,6 +148,7 @@ export default {
       snackbarColor: '',
       calendar: false,
       form: {
+        creator: '',
         uid_of_creator: null,
         title: '',
         password: '',
@@ -190,6 +191,7 @@ export default {
       }
     }
     firebase.auth().onAuthStateChanged((user) => {
+      console.log('user :>> ', user)
       if (user && this.roomDetails && this.form.uid_of_creator !== user.uid) {
         this.$router.push('/dashboard')
       } else if (
@@ -200,6 +202,9 @@ export default {
         console.log('user se shoduje s tvurcem roomu')
       } else {
         this.form.uid_of_creator = user.uid
+      }
+      this.form.creator = {
+        email: user.email,
       }
     })
   },
@@ -216,6 +221,7 @@ export default {
       return uniqueId
     },
     createGame() {
+      console.log('this.form :>> ', this.form)
       if (!this.valid) {
         this.snackbar = true
         this.snackbarText = 'Please fill information into all required fields.'

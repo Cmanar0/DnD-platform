@@ -40,6 +40,7 @@
 
 <script>
 import firebase from 'firebase/compat/app'
+import userUtil from '~/utils/user.js'
 import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
 
@@ -61,16 +62,25 @@ export default {
     },
   },
   methods: {
-    onLogin() {
+    async onLogin() {
       this.loading = true
-
       console.log('this.email :>> ', this.email)
       console.log('this.password :>> ', this.password)
       // this.$emit('loading-progress')
       firebase
         .auth()
         .signInWithEmailAndPassword(this.email, this.password)
-        .then((user) => {
+        .then(async (user) => {
+          userUtil.setUidToLocalStorage(user.user.uid)
+          const userFromFirestoreDatabase = await userUtil.fetchUser(
+            'users',
+            user.user.uid
+          )
+          console.log(
+            'userFromFirestoreDatabase :>> ',
+            userFromFirestoreDatabase
+          )
+          userUtil.setUserInfoToLocalStorage(userFromFirestoreDatabase)
           this.$router.push('/dashboard')
         })
         .catch((error) => {

@@ -46,6 +46,8 @@
 
 <script>
 import firebase from 'firebase/compat/app'
+import userUtil from '~/utils/user.js'
+
 import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
 
@@ -79,6 +81,7 @@ export default {
         .auth()
         .createUserWithEmailAndPassword(this.email, this.password)
         .then((cred) => {
+          this.uid = cred.user.uid
           return firebase
             .firestore()
             .collection('users')
@@ -87,9 +90,21 @@ export default {
               uid: cred.user.uid,
               nickname: this.nickname,
               email: this.email,
+              bio: null,
+              image: null,
             })
         })
-        .then(() => {
+        .then(async (user) => {
+          userUtil.setUidToLocalStorage(this.uid)
+          const userFromFirestoreDatabase = await userUtil.fetchUser(
+            'users',
+            this.uid
+          )
+          console.log(
+            'userFromFirestoreDatabase :>> ',
+            userFromFirestoreDatabase
+          )
+          userUtil.setUserInfoToLocalStorage(userFromFirestoreDatabase)
           this.$router.push('/dashboard')
         })
         .catch((error) => {

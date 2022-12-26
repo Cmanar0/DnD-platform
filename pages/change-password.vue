@@ -8,7 +8,7 @@
           </div>
           <div class="medailon">
             <h3>Change your password</h3>
-            <p>your password will be changed immediatelly</p>
+            <p>Your password will be changed immediatelly</p>
           </div>
         </div>
       </div>

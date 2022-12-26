@@ -30,6 +30,7 @@
 <script>
 import MyRoom from '/components/list-components/list-of-rooms/MyRoom.vue'
 import { getCollection } from '~/firebase'
+import firebase from 'firebase/compat/app'
 
 export default {
   components: {
@@ -37,17 +38,26 @@ export default {
   },
   data() {
     return {
+      userUid: null,
       search: '',
-      myRooms: {},
+      myRooms: [],
     }
   },
   async created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      this.userUid = user.uid
+    })
     await this.fetchData('rooms')
   },
   methods: {
     async fetchData(collection) {
-      this.myRooms = await getCollection(collection)
-      console.log(this.myRooms)
+      let allRooms = await getCollection(collection)
+
+      this.myRooms = [
+        ...allRooms.filter((room) => room.uid_of_creator === this.userUid),
+      ]
+      console.log('myRooms', this.myRooms)
+      console.log('allRooms', allRooms)
     },
   },
 }
