@@ -23,7 +23,7 @@
               <v-row>
                 <v-col cols="12" md="6" sm="12">
                   <v-text-field
-                    v-model="nickname"
+                    v-model="userInfo.nickname"
                     label="Nickname"
                     :rules="nicknameRules"
                     type="text"
@@ -35,9 +35,8 @@
                   <div class="pic-input">
                     <v-file-input
                       label="Choose photo"
-                      v-model="image"
+                      v-model="userInfo.image"
                       show-size
-                      :rules="imageRules"
                       truncate-length="20"
                       @change="uploadFile"
                     ></v-file-input>
@@ -48,8 +47,7 @@
               <v-row>
                 <v-col cols="12" md="12">
                   <v-text-field
-                    v-model="bio"
-                    :rules="bioRules"
+                    v-model="userInfo.bio"
                     label="Bio"
                     counter="100"
                     type="text"
@@ -102,6 +100,7 @@ import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
 import Snackbar from '/components/shared/Snackbar.vue'
+import { updateDocument } from '~/firebase'
 
 export default {
   components: { Snackbar },
@@ -112,27 +111,29 @@ export default {
         (v) => !!v || 'Nickname is required',
         (v) => v.length >= 4 || 'Nickname must have at least 4 characters',
       ],
-      imageRules: [(v) => !!v || 'file input is required'],
-      bioRules: [
-        (v) => !!v || 'Title is required',
-        (v) => v.length >= 20 || 'Bio must have at least 20 characters',
-        (v) => v.length <= 100 || 'Bio can have max 100 characters',
-      ],
-      nickname: '',
+
+      userInfo: {
+        nickname: ' ',
+        image: null,
+        bio: '                                   ',
+      },
       url: null,
-      image: null,
-      bio: '',
       snackbar: false,
       snackbarText: '',
       snackbarColor: '',
     }
   },
+  mounted() {
+    this.userInfo = { ...JSON.parse(localStorage.getItem('dndUser')) }
+    if (this.userInfo.image !== null) {
+      this.url = URL.createObjectURL(this.image)
+    }
+  },
   methods: {
     uploadFile(e) {
       if (e) {
-        this.url = URL.createObjectURL(this.image)
+        this.url = URL.createObjectURL(this.userInfo.image)
       } else this.url = null
-      console.log(e)
     },
     hasHistory() {
       return window.history.length > 1
@@ -145,23 +146,25 @@ export default {
         return
       }
 
-      var user = firebase.auth().currentUser
+      updateDocument('users', this.userInfo.uid, this.userInfo)
 
-      // Update the user's password
-      user
-        .updatePassword(this.newPassword)
-        .then(() => {
-          this.snackbarColor = 'green'
-          this.snackbarText = 'Your information was updated successfully'
-          this.snackbar = true
-          this.newPassword = ''
-          this.newPasswordAgain = ''
-        })
-        .catch((error) => {
-          this.snackbarColor = 'red'
-          this.snackbarText = error
-          this.snackbar = true
-        })
+      // var user = firebase.auth().currentUser
+
+      // // Update the user's password
+      // user
+      //   .updatePassword(this.newPassword)
+      //   .then(() => {
+      //     this.snackbarColor = 'green'
+      //     this.snackbarText = 'Your information was updated successfully'
+      //     this.snackbar = true
+      //     this.newPassword = ''
+      //     this.newPasswordAgain = ''
+      //   })
+      //   .catch((error) => {
+      //     this.snackbarColor = 'red'
+      //     this.snackbarText = error
+      //     this.snackbar = true
+      //   })
     },
   },
 }
