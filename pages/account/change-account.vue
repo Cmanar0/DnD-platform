@@ -166,7 +166,6 @@ export default {
       // Get a reference to the file in Firebase Storage
       const storageRef = firebase.storage().ref()
       const fileRef = storageRef.child(this.image.name)
-
       // Save the file reference to the userInfo object
       this.userInfo.profile_photo_name = this.image.name
 
