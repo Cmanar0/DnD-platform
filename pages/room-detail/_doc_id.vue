@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div>{{ query.doc_id }}</div>
     <div class="page-head">
       <div class="flex-head">
         <div class="flex">
@@ -20,19 +19,23 @@
     <div class="content-page">
       <div class="content-card">
         <!-- <CreateEditRoom></CreateEditRoom> -->
+        <div>{{ query.doc_id }}</div>
         {{ roomDetails.title }}
       </div>
+      <ListOfUserCards></ListOfUserCards>
     </div>
   </div>
 </template>
 
 <script>
 import CreateEditRoom from '/components/form-components/CreateEditRoom.vue'
+import ListOfUserCards from '/components/list-components/list-of-users-in-game/ListOfUserCards.vue'
 import { getDocument } from '~/firebase'
 
 export default {
   components: {
     CreateEditRoom,
+    ListOfUserCards,
   },
   data() {
     return {

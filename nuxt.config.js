@@ -52,6 +52,7 @@ export default {
         },
         services: {
           auth: true, // Just as example. Can be any other service.
+          storage: true, // enable the Firebase Cloud Storage service
         },
       },
     ],

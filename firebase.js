@@ -7,6 +7,7 @@ const firebaseConfig = {
   apiKey: 'AIzaSyDNqgjC3zIUoZPHx4jVpeaCvZwV-hWbaIk',
   authDomain: 'dnd-platform.firebaseapp.com',
   projectId: 'dnd-platform',
+  databseURL: 'https://dnd-platform.firebaseio.com',
   storageBucket: 'dnd-platform.appspot.com',
   messagingSenderId: '599133981873',
   appId: '1:599133981873:web:f134539f75068fca112690',

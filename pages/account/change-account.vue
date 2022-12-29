@@ -12,6 +12,7 @@
               Update your information so other users can get to know you better
             </p>
           </div>
+          {{ userInfo }}
         </div>
       </div>
     </div>
@@ -35,7 +36,7 @@
                   <div class="pic-input">
                     <v-file-input
                       label="Choose photo"
-                      v-model="userInfo.image"
+                      v-model="image"
                       show-size
                       truncate-length="20"
                       @change="uploadFile"
@@ -101,6 +102,7 @@ import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
 import Snackbar from '/components/shared/Snackbar.vue'
 import { updateDocument } from '~/firebase'
+import userUtil from '~/utils/user.js'
 
 export default {
   components: { Snackbar },
@@ -115,9 +117,11 @@ export default {
       userInfo: {
         nickname: ' ',
         image: null,
+        profile_photo_name: null,
         bio: '                                   ',
       },
       url: null,
+      image: null,
       snackbar: false,
       snackbarText: '',
       snackbarColor: '',
@@ -125,46 +129,59 @@ export default {
   },
   mounted() {
     this.userInfo = { ...JSON.parse(localStorage.getItem('dndUser')) }
-    if (this.userInfo.image !== null) {
-      this.url = URL.createObjectURL(this.image)
-    }
+    //get the img from storage and save it to this.image
+    // if (this.image !== null) {
+    //   this.url = URL.createObjectURL(this.image)
+    // }
   },
   methods: {
     uploadFile(e) {
       if (e) {
-        this.url = URL.createObjectURL(this.userInfo.image)
+        this.url = URL.createObjectURL(this.image)
       } else this.url = null
     },
     hasHistory() {
       return window.history.length > 1
     },
-    updateAccount() {
+    async updateAccount() {
       if (!this.valid) {
         this.snackbar = true
         this.snackbarText = 'Please fill information into all required fields.'
         this.snackbarColor = 'red'
         return
       }
+      console.log('this.image:::')
+      console.log(this.image)
+      if (this.image) {
+        await this.uploadImage()
+      }
 
-      updateDocument('users', this.userInfo.uid, this.userInfo)
+      await updateDocument('users', this.userInfo.uid, this.userInfo)
+      this.$router.push('/account/account')
+    },
+    async uploadImage() {
+      if (this.userInfo.profile_photo_name !== null) {
+        await this.deleteImage()
+      }
+      // Get a reference to the file in Firebase Storage
+      const storageRef = firebase.storage().ref()
+      const fileRef = storageRef.child(this.image.name)
 
-      // var user = firebase.auth().currentUser
+      // Save the file reference to the userInfo object
+      this.userInfo.profile_photo_name = this.image.name
 
-      // // Update the user's password
-      // user
-      //   .updatePassword(this.newPassword)
-      //   .then(() => {
-      //     this.snackbarColor = 'green'
-      //     this.snackbarText = 'Your information was updated successfully'
-      //     this.snackbar = true
-      //     this.newPassword = ''
-      //     this.newPasswordAgain = ''
-      //   })
-      //   .catch((error) => {
-      //     this.snackbarColor = 'red'
-      //     this.snackbarText = error
-      //     this.snackbar = true
-      //   })
+      // Upload the file
+      await fileRef.put(this.image)
+      userUtil.setUserInfoToLocalStorage(this.userInfo)
+    },
+    async deleteImage() {
+      const storage = firebase.storage()
+
+      // Assume that the file is stored in a folder with the name 'files'
+      const fileRef = storage.ref(this.userInfo.profile_photo_name)
+      // Delete the file
+      fileRef.delete()
+      // await this.userInfo.profile_photo_name.delete()
     },
   },
 }

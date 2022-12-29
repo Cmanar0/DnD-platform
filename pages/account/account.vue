@@ -5,6 +5,7 @@
         <div class="flex">
           <div class="ico">
             <v-icon class="big-icon icon-spinner">mdi-account </v-icon>
+            {{ userInfo }}
           </div>
           <div class="medailon">
             <h3>Your account information</h3>
