@@ -12,7 +12,7 @@
               Update your information so other users can get to know you better
             </p>
           </div>
-          {{ userInfo }}
+          <!-- {{ userInfo }} -->
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col cols="12" md="12">
+                <v-col cols="12" md="6" sm="12">
                   <v-text-field
                     v-model="userInfo.bio"
                     label="Bio"
@@ -54,6 +54,25 @@
                     type="text"
                     required
                   ></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6" sm="12">
+                  <div>
+                    <v-text-field
+                      label="Color of the profile background"
+                      v-model="userInfo.background_color.hex"
+                      @click="showDialog = true"
+                    />
+                    <v-dialog max-width="290" v-model="showDialog">
+                      <div class="dialog-color">
+                        <v-color-picker
+                          v-model="userInfo.background_color.hex"
+                        />
+                        <v-btn class="dialog-btn" @click="showDialog = false"
+                          >Save</v-btn
+                        >
+                      </div>
+                    </v-dialog>
+                  </div>
                 </v-col>
               </v-row>
               <v-row>
@@ -117,9 +136,11 @@ export default {
       userInfo: {
         nickname: ' ',
         image: null,
-        profile_photo_name: null,
+        profile_photo_path_name: null,
+        background_color: '',
         bio: '                                   ',
       },
+      showDialog: false,
       url: null,
       image: null,
       snackbar: false,
@@ -150,37 +171,41 @@ export default {
         this.snackbarColor = 'red'
         return
       }
-      console.log('this.image:::')
-      console.log(this.image)
+      console.log('this.userInfo')
+      console.log(this.userInfo)
       if (this.image) {
         await this.uploadImage()
       }
 
       await updateDocument('users', this.userInfo.uid, this.userInfo)
+      userUtil.setUserInfoToLocalStorage(this.userInfo)
+
       this.$router.push('/account/account')
     },
     async uploadImage() {
-      if (this.userInfo.profile_photo_name !== null) {
+      if (this.userInfo.profile_photo_path_name !== null) {
         await this.deleteImage()
       }
       // Get a reference to the file in Firebase Storage
       const storageRef = firebase.storage().ref()
-      const fileRef = storageRef.child(this.image.name)
+      const fileRef = storageRef.child(
+        `profile_photos/${this.userInfo.uid}/${this.image.name}`
+      )
       // Save the file reference to the userInfo object
-      this.userInfo.profile_photo_name = this.image.name
+      this.userInfo.profile_photo_path_name = `profile_photos/${this.userInfo.uid}/${this.image.name}`
 
       // Upload the file
       await fileRef.put(this.image)
-      userUtil.setUserInfoToLocalStorage(this.userInfo)
+      // userUtil.setUserInfoToLocalStorage(this.userInfo)
     },
     async deleteImage() {
       const storage = firebase.storage()
 
       // Assume that the file is stored in a folder with the name 'files'
-      const fileRef = storage.ref(this.userInfo.profile_photo_name)
+      const fileRef = storage.ref(this.userInfo.profile_photo_path_name)
       // Delete the file
       fileRef.delete()
-      // await this.userInfo.profile_photo_name.delete()
+      // await this.userInfo.profile_photo_path_name.delete()
     },
   },
 }
@@ -189,6 +214,7 @@ export default {
 .custom {
   padding: 0 15px 0 40px !important;
 }
+
 .btn-left {
   display: flex;
   justify-content: flex-start;
@@ -196,10 +222,21 @@ export default {
 .pic-input {
   display: flex;
 }
+.dialog-color {
+  padding: 15px;
+}
+.dialog-btn {
+  margin-top: 15px;
+  width: 100%;
+}
 .profile-photo {
   margin-left: 25px;
   max-width: 70px;
+  width: 70px;
   max-height: 70px;
+  height: 70px;
+  object-fit: cover;
+
   border-radius: 40px;
 }
 </style>
