@@ -91,8 +91,8 @@ export default {
               nickname: this.nickname,
               email: this.email,
               bio: null,
-              background_page_img_name: null,
-              profile_photo_name: null,
+              background_color: null,
+              profile_photo_path_name: null,
             })
         })
         .then(async (user) => {
