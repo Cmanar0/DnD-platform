@@ -29,7 +29,7 @@
               mdi-account-circle
             </v-icon>
           </div>
-          <div class="name">
+          <div class="name" id="name">
             <h1>
               {{ userInfo.nickname }}
             </h1>
@@ -87,8 +87,25 @@ export default {
       })
     }
     if (this.userInfo.background_color !== null) {
-      const imgElement = document.getElementById('top')
-      imgElement.style.backgroundColor = this.userInfo.background_color.hex
+      const element = document.getElementById('top')
+      element.style.backgroundColor = this.userInfo.background_color.hex
+
+      // Check the brightness of the background color
+      const brightness =
+        (this.userInfo.background_color.rgba.r * 299 +
+          this.userInfo.background_color.rgba.g * 587 +
+          this.userInfo.background_color.rgba.b * 114) /
+        1000
+
+      const nameelement = document.getElementById('name')
+
+      if (brightness > 125) {
+        // Set text color to black if background is light
+        nameelement.style.color = 'black'
+      } else {
+        // Set text color to white if background is dark
+        nameelement.style.color = 'white'
+      }
     }
   },
   watch: {

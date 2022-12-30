@@ -64,9 +64,7 @@
                     />
                     <v-dialog max-width="290" v-model="showDialog">
                       <div class="dialog-color">
-                        <v-color-picker
-                          v-model="userInfo.background_color.hex"
-                        />
+                        <v-color-picker v-model="userInfo.background_color" />
                         <v-btn class="dialog-btn" @click="showDialog = false"
                           >Save</v-btn
                         >
@@ -150,10 +148,6 @@ export default {
   },
   mounted() {
     this.userInfo = { ...JSON.parse(localStorage.getItem('dndUser')) }
-    //get the img from storage and save it to this.image
-    // if (this.image !== null) {
-    //   this.url = URL.createObjectURL(this.image)
-    // }
   },
   methods: {
     uploadFile(e) {
