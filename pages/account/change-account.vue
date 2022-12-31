@@ -40,6 +40,8 @@
                       show-size
                       truncate-length="20"
                       @change="uploadFile"
+                      accept="image/*"
+                      @before-upload="validateFile"
                     ></v-file-input>
                     <v-img class="profile-photo" v-if="url" :src="url"></v-img>
                   </div>
@@ -151,9 +153,17 @@ export default {
   },
   methods: {
     uploadFile(e) {
-      if (e) {
-        this.url = URL.createObjectURL(this.image)
-      } else this.url = null
+      var file = e
+      console.log(file)
+    },
+    validateFile(file) {
+      if (file.type.startsWith('image/')) {
+        // The file is an image, so allow it to be uploaded
+        return true
+      } else {
+        // The file is not an image, so cancel the upload
+        return false
+      }
     },
     hasHistory() {
       return window.history.length > 1
