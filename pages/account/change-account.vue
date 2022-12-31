@@ -153,8 +153,9 @@ export default {
   },
   methods: {
     uploadFile(e) {
-      var file = e
-      console.log(file)
+      if (e) {
+        this.url = URL.createObjectURL(this.image)
+      } else this.url = null
     },
     validateFile(file) {
       if (file.type.startsWith('image/')) {
